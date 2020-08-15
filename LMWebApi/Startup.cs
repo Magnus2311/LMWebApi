@@ -6,9 +6,10 @@ using Microsoft.Extensions.Hosting;
 namespace LMWebApi
 {
     public class Startup
-    { 
+    {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
