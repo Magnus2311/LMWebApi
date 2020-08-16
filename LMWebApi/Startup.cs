@@ -9,6 +9,7 @@ namespace LMWebApi
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers();
         }
 
@@ -20,6 +21,12 @@ namespace LMWebApi
             }
 
             app.UseRouting();
+
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+            );
 
             app.UseEndpoints(endpoints =>
             {
