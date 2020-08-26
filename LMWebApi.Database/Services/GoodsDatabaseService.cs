@@ -15,6 +15,11 @@ namespace LMWebApi.Database.Services
             dbContext = context;
         }
 
+        public void jsfdd()
+        {
+
+        }
+
         public void AddGood()
         {
             throw new NotImplementedException();
