@@ -1,16 +1,36 @@
+using LMWebApi.Database;
+using LMWebApi.Database.Interfaces;
+using LMWebApi.Database.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Configuration;
 
 namespace LMWebApi
 {
     public class Startup
     {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
+
+            //MSSQL Database
+            services.AddDbContext<LMDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddCors();
             services.AddControllers();
+
+            RegisterServices(services);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -19,6 +39,7 @@ namespace LMWebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
 
             app.UseRouting();
 
@@ -32,6 +53,21 @@ namespace LMWebApi
             {
                 endpoints.MapControllers();
             });
+
+            using (var dbContext = app
+            .ApplicationServices
+            .GetRequiredService<IServiceScopeFactory>()
+            .CreateScope()
+            .ServiceProvider
+            .GetService<LMDbContext>())
+            {
+                dbContext.Database.Migrate();
+            }
+        }
+
+        private void RegisterServices(IServiceCollection services)
+        {
+            services.AddScoped<IGoodsDatabaseService, GoodsDatabaseService>();
         }
     }
 }

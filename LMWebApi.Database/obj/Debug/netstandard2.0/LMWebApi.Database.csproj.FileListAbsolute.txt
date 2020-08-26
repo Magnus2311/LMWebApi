@@ -1,0 +1,9 @@
+E:\vs code\LMWebApi\LMWebApi\LMWebApi.Database\bin\Debug\netstandard2.0\LMWebApi.Database.deps.json
+E:\vs code\LMWebApi\LMWebApi\LMWebApi.Database\bin\Debug\netstandard2.0\LMWebApi.Database.dll
+E:\vs code\LMWebApi\LMWebApi\LMWebApi.Database\obj\Debug\netstandard2.0\LMWebApi.Database.csprojAssemblyReference.cache
+E:\vs code\LMWebApi\LMWebApi\LMWebApi.Database\obj\Debug\netstandard2.0\LMWebApi.Database.AssemblyInfoInputs.cache
+E:\vs code\LMWebApi\LMWebApi\LMWebApi.Database\obj\Debug\netstandard2.0\LMWebApi.Database.AssemblyInfo.cs
+E:\vs code\LMWebApi\LMWebApi\LMWebApi.Database\bin\Debug\netstandard2.0\LMWebApi.Database.pdb
+E:\vs code\LMWebApi\LMWebApi\LMWebApi.Database\obj\Debug\netstandard2.0\LMWebApi.Database.dll
+E:\vs code\LMWebApi\LMWebApi\LMWebApi.Database\obj\Debug\netstandard2.0\LMWebApi.Database.pdb
+E:\vs code\LMWebApi\LMWebApi\LMWebApi.Database\obj\Debug\netstandard2.0\LMWebApi.Database.csproj.CoreCompileInputs.cache
