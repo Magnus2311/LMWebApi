@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
 
 namespace LMWebApi.Database.Models
 {
-    public class Good
+    public class Product
     {
         public int Id { get; set; }
 

@@ -28,7 +28,7 @@ namespace LMWebApi.Database.Services
             throw new NotImplementedException();
         }
 
-        public List<Good> GetGoods()
+        public IEnumerable<Product> GetGoods()
         {
             throw new NotImplementedException();
         }
