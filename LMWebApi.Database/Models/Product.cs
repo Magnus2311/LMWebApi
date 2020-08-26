@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace LMWebApi.Database.Models
 {
@@ -6,6 +6,8 @@ namespace LMWebApi.Database.Models
     {
         public int Id { get; set; }
 
+        [Required]
+        [StringLength(100)]
         public string Name { get; set; }
 
         public decimal Carbohydrates { get; set; }
@@ -16,6 +18,7 @@ namespace LMWebApi.Database.Models
 
         public decimal Protein { get; set; }
 
-        public Byte[] Image { get; set; }
+        [Required]
+        public string Image { get; set; }
     }
 }

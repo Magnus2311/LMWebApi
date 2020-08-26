@@ -5,10 +5,6 @@ namespace LMWebApi.Database
 {
     public class LMDbContext : DbContext
     {
-        public LMDbContext(DbContextOptions<LMDbContext> options)
-            : base(options)
-        {
-        }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -18,9 +14,11 @@ namespace LMWebApi.Database
                 .ValueGeneratedOnAdd();
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            base.OnConfiguring(optionsBuilder);
+            base.OnConfiguring(builder);
+
+            builder.UseSqlServer("Server=.;Database=LifeMode;User Id=sa;Password=Micr0!nvest;");
         }
 
         public DbSet<Product> Products { get; set; }

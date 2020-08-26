@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LMWebApi.Database.Migrations
 {
@@ -8,7 +7,7 @@ namespace LMWebApi.Database.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Goods",
+                name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -18,18 +17,18 @@ namespace LMWebApi.Database.Migrations
                     Fats = table.Column<decimal>(nullable: false),
                     Calories = table.Column<decimal>(nullable: false),
                     Protein = table.Column<decimal>(nullable: false),
-                    Image = table.Column<byte[]>(nullable: true)
+                    Image = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Goods", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Goods");
+                name: "Products");
         }
     }
 }

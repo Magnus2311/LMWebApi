@@ -2,35 +2,37 @@
 using LMWebApi.Database.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LMWebApi.Database.Services
 {
-    public class GoodsDatabaseService : IGoodsDatabaseService
+    public class ProductsDatabaseService : IProductsDatabaseService
     {
-        private readonly LMDbContext dbContext;
-
-        public GoodsDatabaseService(LMDbContext context)
+        public async Task AddProduct(Product product)
         {
-            dbContext = context;
+            var dbContext = new LMDbContext();
+            await dbContext.Products.AddAsync(product);
+            await dbContext.SaveChangesAsync();
         }
 
-        public void ddGood()
-        {
-        }
-        public void AddGood()
+        public void DeleteProduct()
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteGood()
+        public IEnumerable<Product> GetProducts()
         {
-            throw new NotImplementedException();
+            var dbContext = new LMDbContext();
+            return dbContext.Products;
         }
 
-        public IEnumerable<Product> GetGoods()
+        public async Task UpdateProduct(Product product)
         {
-            throw new NotImplementedException();
+            var dbContext = new LMDbContext();
+            var productToUpdate = dbContext.Products.FirstOrDefault(p => p.Id == product.Id);
+            productToUpdate = product;
+            await dbContext.SaveChangesAsync();
         }
     }
 }
