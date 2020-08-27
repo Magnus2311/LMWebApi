@@ -2,7 +2,7 @@
 
 namespace LMWebApi.Database.Migrations
 {
-    public partial class AddedCategory : Migration
+    public partial class CategoryAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,7 +31,7 @@ namespace LMWebApi.Database.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
                     Image = table.Column<string>(nullable: true),
-                    ParentId = table.Column<int>(nullable: false)
+                    ParentId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -22,8 +23,12 @@ public class CategoriesController : ControllerBase
     [HttpPost]
     public async Task<Category> Post(Category category)
     {
-        await _categoriesDbService.Add(category);
-        return category;
+        if (ModelState.IsValid)
+        {
+            await _categoriesDbService.Add(category);
+            return category;
+        }
+        throw new Exception();
     }
 
     [HttpPut]
