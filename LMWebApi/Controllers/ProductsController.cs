@@ -7,11 +7,11 @@ using System;
 
 [Route("[controller]")]
 [ApiController]
-public class GoodsController : ControllerBase
+public class ProductsController : ControllerBase
 {
     private readonly IProductsDatabaseService _productsDbService;
 
-    public GoodsController(IProductsDatabaseService productsDbService)
+    public ProductsController(IProductsDatabaseService productsDbService)
     {
         _productsDbService = productsDbService;
     }
@@ -35,5 +35,11 @@ public class GoodsController : ControllerBase
     public async Task Put(Product product)
     {
         await _productsDbService.UpdateProduct(product);
+    }
+
+    [HttpDelete]
+    public async Task Delete(int productId)
+    {
+        await _productsDbService.DeleteProduct(productId);
     }
 }

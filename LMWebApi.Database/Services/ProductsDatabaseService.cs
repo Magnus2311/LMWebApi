@@ -1,8 +1,6 @@
 ﻿using LMWebApi.Database.Interfaces;
 using LMWebApi.Database.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LMWebApi.Database.Services
@@ -16,9 +14,12 @@ namespace LMWebApi.Database.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public void DeleteProduct()
+        public async Task DeleteProduct(int productId)
         {
-            throw new NotImplementedException();
+            var dbContext = new LMDbContext();
+            var product = await dbContext.Products.FindAsync(productId);
+            dbContext.Products.Remove(product);
+            await dbContext.SaveChangesAsync();
         }
 
         public IEnumerable<Product> GetProducts()
@@ -30,7 +31,7 @@ namespace LMWebApi.Database.Services
         public async Task UpdateProduct(Product product)
         {
             var dbContext = new LMDbContext();
-            var productToUpdate = dbContext.Products.FirstOrDefault(p => p.Id == product.Id);
+            var productToUpdate = await dbContext.Products.FindAsync(product.Id);
             productToUpdate = product;
             await dbContext.SaveChangesAsync();
         }

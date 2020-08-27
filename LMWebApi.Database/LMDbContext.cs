@@ -5,6 +5,8 @@ namespace LMWebApi.Database
 {
     public class LMDbContext : DbContext
     {
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -12,6 +14,13 @@ namespace LMWebApi.Database
             builder.Entity<Product>()
                 .Property(e => e.Id)
                 .ValueGeneratedOnAdd();
+
+            builder
+                .Entity<Category>()
+                .HasOne(c => c.Parent)
+                .WithMany(c => c.SubCategories)
+                .HasForeignKey(c => c.ParentId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
@@ -20,7 +29,5 @@ namespace LMWebApi.Database
 
             builder.UseSqlServer("Server=.;Database=LifeMode;User Id=sa;Password=Micr0!nvest;");
         }
-
-        public DbSet<Product> Products { get; set; }
     }
 }

@@ -68,6 +68,7 @@ namespace LMWebApi
         private void RegisterServices(IServiceCollection services)
         {
             services.AddScoped<IProductsDatabaseService, ProductsDatabaseService>();
+            services.AddScoped<ICategoriesDatabaseService, CategoriesDatabaseService>();
         }
     }
 }
