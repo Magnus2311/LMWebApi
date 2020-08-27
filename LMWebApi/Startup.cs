@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Configuration;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 
 namespace LMWebApi
 {
@@ -24,11 +25,10 @@ namespace LMWebApi
         {
 
             //MSSQL Database
-            services.AddDbContext<LMDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<LMDbContext>();
 
             services.AddCors();
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
 
             RegisterServices(services);
         }
@@ -67,7 +67,7 @@ namespace LMWebApi
 
         private void RegisterServices(IServiceCollection services)
         {
-            services.AddScoped<IGoodsDatabaseService, GoodsDatabaseService>();
+            services.AddScoped<IProductsDatabaseService, ProductsDatabaseService>();
         }
     }
 }

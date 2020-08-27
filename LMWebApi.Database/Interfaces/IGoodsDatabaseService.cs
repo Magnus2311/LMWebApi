@@ -1,15 +1,17 @@
-﻿using LMWebApi.Database.Models;
+﻿using System.Threading.Tasks;
+using LMWebApi.Database.Models;
 using System.Collections.Generic;
 
 namespace LMWebApi.Database.Interfaces
 {
-    public interface IGoodsDatabaseService
+    public interface IProductsDatabaseService
     {
-        IEnumerable<Product> GetGoods();
+        IEnumerable<Product> GetProducts();
 
-        void AddGood();
+        Task AddProduct(Product product);
 
-        void DeleteGood();
+        void DeleteProduct();
+        Task UpdateProduct(Product product);
     }
 }
 
