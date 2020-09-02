@@ -15,12 +15,16 @@ namespace LMWebApi.Database
                 .Property(e => e.Id)
                 .ValueGeneratedOnAdd();
 
-            builder
-                .Entity<Category>()
+            builder.Entity<Category>()
                 .HasOne(c => c.Parent)
                 .WithMany(c => c.SubCategories)
                 .HasForeignKey(c => c.ParentId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Product>()
+                .HasOne(p => p.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.CategoryId);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
