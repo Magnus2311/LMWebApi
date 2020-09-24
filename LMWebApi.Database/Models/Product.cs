@@ -22,7 +22,6 @@ namespace LMWebApi.Database.Models
         public string Image { get; set; }
 
         public int CategoryId { get; set; }
-        [Required]
         public Category Category { get; set; }
     }
 }
