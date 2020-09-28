@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LMWebApi.Database;
+using LMWebApi.Database.Models;
 
 public class CategoriesDatabaseService : ICategoriesDatabaseService
 {
@@ -8,6 +9,13 @@ public class CategoriesDatabaseService : ICategoriesDatabaseService
     {
         var dbContext = new LMDbContext();
         await dbContext.Categories.AddAsync(category);
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task Add(List<Category> categories)
+    {
+        var dbContext = new LMDbContext();
+        await dbContext.Categories.AddRangeAsync(categories);
         await dbContext.SaveChangesAsync();
     }
 

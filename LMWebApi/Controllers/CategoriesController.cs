@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LMWebApi.Database.Models;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("[controller]")]

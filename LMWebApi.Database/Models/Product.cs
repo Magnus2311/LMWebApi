@@ -1,25 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace LMWebApi.Database.Models
+﻿namespace LMWebApi.Database.Models
 {
     public class Product
     {
-        public int Id { get; set; }
-
-        [Required]
-        [StringLength(100)]
-        public string Name { get; set; }
-
-        public decimal Carbohydrates { get; set; }
-
-        public decimal Fats { get; set; }
-
-        public decimal Calories { get; set; }
-
-        public decimal Protein { get; set; }
-
-        [Required]
+        public string Id { get; set; }
         public string Image { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal Calories { get; set; }
+        public decimal Proteins { get; set; }
+        public decimal Carbohydrates { get; set; }
+        public decimal Fats { get; set; }
+        public ProductInfo ProductInfo { get; set; } = new ProductInfo();
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }
