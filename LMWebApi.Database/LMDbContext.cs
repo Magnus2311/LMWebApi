@@ -12,10 +12,6 @@ namespace LMWebApi.Database
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Product>()
-                .Property(e => e.Id)
-                .ValueGeneratedOnAdd();
-
             builder.Entity<Category>()
                 .HasOne(c => c.Parent)
                 .WithMany(c => c.SubCategories)

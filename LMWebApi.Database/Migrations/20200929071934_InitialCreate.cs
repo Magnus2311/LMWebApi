@@ -10,11 +10,10 @@ namespace LMWebApi.Database.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Image = table.Column<string>(nullable: false),
-                    ParentId = table.Column<int>(nullable: true)
+                    ParentId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -39,7 +38,7 @@ namespace LMWebApi.Database.Migrations
                     Proteins = table.Column<decimal>(nullable: false),
                     Carbohydrates = table.Column<decimal>(nullable: false),
                     Fats = table.Column<decimal>(nullable: false),
-                    CategoryId = table.Column<int>(nullable: false)
+                    CategoryId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -49,7 +48,7 @@ namespace LMWebApi.Database.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
