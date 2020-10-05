@@ -5,41 +5,45 @@ using System.Collections.Generic;
 using LMWebApi.Database.Models;
 using System;
 
-[Route("[controller]")]
-[ApiController]
-public class ProductsController : ControllerBase
+namespace LMWebApi.Controllers
 {
-    private readonly IProductsDatabaseService _productsDbService;
 
-    public ProductsController(IProductsDatabaseService productsDbService)
+    [Route("[controller]")]
+    [ApiController]
+    public class ProductsController : ControllerBase
     {
-        _productsDbService = productsDbService;
-    }
+        private readonly IProductsDatabaseService _productsDbService;
 
-    [HttpGet]
-    public IEnumerable<Product> Get() => _productsDbService.GetProducts();
-
-    [HttpPost]
-    public async Task<Product> Post(Product product)
-    {
-        if (ModelState.IsValid)
+        public ProductsController(IProductsDatabaseService productsDbService)
         {
-            await _productsDbService.AddProduct(product);
-            return product;
+            _productsDbService = productsDbService;
         }
 
-        throw new Exception();
-    }
+        [HttpGet]
+        public IEnumerable<Product> Get() => _productsDbService.GetProducts();
 
-    [HttpPut]
-    public async Task Put(Product product)
-    {
-        await _productsDbService.UpdateProduct(product);
-    }
+        [HttpPost]
+        public async Task<Product> Post(Product product)
+        {
+            if (ModelState.IsValid)
+            {
+                await _productsDbService.AddProduct(product);
+                return product;
+            }
 
-    [HttpDelete]
-    public async Task Delete(int productId)
-    {
-        await _productsDbService.DeleteProduct(productId);
+            throw new Exception();
+        }
+
+        [HttpPut]
+        public async Task Put(Product product)
+        {
+            await _productsDbService.UpdateProduct(product);
+        }
+
+        [HttpDelete]
+        public async Task Delete(string productId)
+        {
+            await _productsDbService.DeleteProduct(productId);
+        }
     }
 }

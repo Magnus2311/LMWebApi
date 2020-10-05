@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LMWebApi.Database.Models
 {
@@ -17,5 +18,7 @@ namespace LMWebApi.Database.Models
 
         public string CategoryId { get; set; }
         public Category Category { get; set; }
+
+        public List<ProductMeal> ProductMeals { get; set; } = new List<ProductMeal>();
     }
 }
