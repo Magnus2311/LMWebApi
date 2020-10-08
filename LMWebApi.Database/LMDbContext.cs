@@ -63,6 +63,9 @@ namespace LMWebApi.Database
                 .HasOne(p => p.Vitamins)
                 .WithOne(v => v.ProductInfo)
                 .HasForeignKey<Vitamins>(v => v.ProductInfoId);
+
+            builder.Entity<ProductMeal>()
+                .HasKey(pm => new { pm.ProductId, pm.MealId });
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
