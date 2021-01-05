@@ -10,7 +10,7 @@ namespace LMWebApi.Database.Interfaces
 
         Task AddProduct(Product product);
 
-        Task DeleteProduct(int productId);
+        Task DeleteProduct(string productId);
         Task UpdateProduct(Product product);
     }
 }
