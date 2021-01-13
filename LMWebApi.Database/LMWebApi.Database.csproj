@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20210111134621_AddedShopItemsAndBrands.cs" />
+    <Compile Remove="Migrations\20210111134621_AddedShopItemsAndBrands.Designer.cs" />
+    <Compile Remove="Migrations\20210113094542_AddedShopItemImage.cs" />
+    <Compile Remove="Migrations\20210113094542_AddedShopItemImage.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
       <PrivateAssets>all</PrivateAssets>

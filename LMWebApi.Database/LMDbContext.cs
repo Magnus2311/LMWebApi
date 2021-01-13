@@ -11,6 +11,7 @@ namespace LMWebApi.Database
         public DbSet<Meal> Meals { get; set; }
         public DbSet<ShopCategory> ShopCategories { get; set; }
         public DbSet<ShopItem> ShopItems { get; set; }
+        public DbSet<Brand> Brands { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -66,6 +67,11 @@ namespace LMWebApi.Database
                 .HasOne(p => p.Vitamins)
                 .WithOne(v => v.ProductInfo)
                 .HasForeignKey<Vitamins>(v => v.ProductInfoId);
+
+            builder.Entity<ShopItem>()
+               .HasOne(p => p.Brand)
+               .WithMany(v => v.ShopItems)
+               .HasForeignKey(v => v.BrandId);
 
             builder.Entity<ProductMeal>()
                 .HasKey(pm => new { pm.ProductId, pm.MealId });

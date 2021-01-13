@@ -14,9 +14,13 @@ namespace LMWebApi.Controllers
     public class ShopController : ControllerBase
     {
         private readonly IShopDatabaseService shopDatabaseService;
-        public ShopController(IShopDatabaseService _shopDatabaseService)
+        private readonly IBrandsDatabaseService brandsDatabaseService;
+        private readonly IShopItemsDatabaseService shopItemsDatabaseService;
+        public ShopController(IShopDatabaseService _shopDatabaseService,IShopItemsDatabaseService _shopItemsDatabaseService,IBrandsDatabaseService _brandsDatabaseService)
         {
             shopDatabaseService = _shopDatabaseService;
+            shopItemsDatabaseService = _shopItemsDatabaseService;
+            brandsDatabaseService = _brandsDatabaseService;
         }
 
         [HttpGet]
@@ -24,7 +28,6 @@ namespace LMWebApi.Controllers
         {
             return shopDatabaseService.GetAllCategories();
         }
-
 
         [HttpPost]
         public async Task<ShopCategory> Post(ShopCategory shopCategory)
@@ -42,5 +45,28 @@ namespace LMWebApi.Controllers
 
         [HttpDelete]
         public async Task Delete(string shopCategoryId) => await shopDatabaseService.Delete(int.Parse(shopCategoryId));
+
+        [HttpGet("shopItems")]
+        public IEnumerable<ShopItem> GetShopItemsByCategory(int categoryId)
+        {
+            return shopItemsDatabaseService.GetShopItemsByCategory(categoryId.ToString());
+        }
+
+        [HttpPost("shopItems")]
+        public async Task<ShopItem> Post(ShopItem shopItem)
+        {
+            if (ModelState.IsValid)
+            {
+                await shopItemsDatabaseService.Add(shopItem);
+                return shopItem;
+            }
+            throw new Exception();
+        }
+
+        [HttpGet("brands")]
+        public IEnumerable<Brand> GetShopBrands()
+        {
+            return brandsDatabaseService.GetAll();
+        }
     }
 }

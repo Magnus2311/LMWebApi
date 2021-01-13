@@ -75,6 +75,8 @@ namespace LMWebApi
             services.AddScoped<ICategoriesDatabaseService, CategoriesDatabaseService>();
             services.AddScoped<IMealsDatabaseService, MealsDatabaseService>();
             services.AddScoped<IShopDatabaseService, ShopDatabaseService>();
+            services.AddScoped<IShopItemsDatabaseService, ShopItemsDatabaseService>();
+            services.AddScoped<IBrandsDatabaseService, BrandsDatabaseService>();
         }
     }
 }
