@@ -4,14 +4,16 @@ using LMWebApi.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LMWebApi.Database.Migrations
 {
     [DbContext(typeof(LMDbContext))]
-    partial class LMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210118113342_AddedUser")]
+    partial class AddedUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -475,7 +477,6 @@ namespace LMWebApi.Database.Migrations
             modelBuilder.Entity("LMWebApi.Database.Models.User", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -485,9 +486,6 @@ namespace LMWebApi.Database.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RefreshTokensStr")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")

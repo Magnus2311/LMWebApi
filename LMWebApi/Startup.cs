@@ -48,9 +48,10 @@ namespace LMWebApi
             app.UseRouting();
 
             app.UseCors(builder => builder
-                .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader()
+                .AllowCredentials()
+                .SetIsOriginAllowed(_ => true)
             );
 
             app.UseEndpoints(endpoints =>
@@ -77,6 +78,8 @@ namespace LMWebApi
             services.AddScoped<IShopDatabaseService, ShopDatabaseService>();
             services.AddScoped<IShopItemsDatabaseService, ShopItemsDatabaseService>();
             services.AddScoped<IBrandsDatabaseService, BrandsDatabaseService>();
+            services.AddScoped<IUserDatabaseService, UserDatabaseService>();
+            services.AddScoped<IHashService, HashService>();
         }
     }
 }
