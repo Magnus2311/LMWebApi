@@ -12,6 +12,7 @@ namespace LMWebApi.Database
         public DbSet<ShopCategory> ShopCategories { get; set; }
         public DbSet<ShopItem> ShopItems { get; set; }
         public DbSet<Brand> Brands { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
