@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LMWebApi.Database.Interfaces;
 using LMWebApi.Database.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace LMWebApi.Database.Services
 {
@@ -52,7 +53,9 @@ namespace LMWebApi.Database.Services
         {
             var context = new LMDbContext();
             var dbUser = await FindByUsernameAsync(user.Username);
-            dbUser.RefreshTokens = user.RefreshTokens;
+            context.Update(dbUser);
+            dbUser.RefreshTokensStr = JsonConvert.SerializeObject(user.RefreshTokens);
+            context.Update(dbUser);
             await context.SaveChangesAsync();
         }
     }

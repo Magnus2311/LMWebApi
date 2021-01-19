@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FutbotReact.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
         private readonly IUserDatabaseService _dbService;
@@ -50,7 +50,7 @@ namespace FutbotReact.Controllers
 
         [HttpGet("getUsername")]
         [Authorize]
-        public IActionResult GetUserName() => Ok(HttpContext.User);
+        public async Task<IActionResult> GetUserName() => Ok(await _dbService.FindByUsernameAsync(HttpContext.User.Identity.Name));
 
         [HttpPost("logout")]
         [Authorize]
