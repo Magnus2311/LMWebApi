@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LMWebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class MealsController : ControllerBase
     {
         private readonly IMealsDatabaseService _mealsDbService;

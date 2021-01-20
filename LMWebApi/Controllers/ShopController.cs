@@ -9,14 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LMWebApi.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ShopController : ControllerBase
     {
         private readonly IShopDatabaseService shopDatabaseService;
         private readonly IBrandsDatabaseService brandsDatabaseService;
         private readonly IShopItemsDatabaseService shopItemsDatabaseService;
-        public ShopController(IShopDatabaseService _shopDatabaseService,IShopItemsDatabaseService _shopItemsDatabaseService,IBrandsDatabaseService _brandsDatabaseService)
+        public ShopController(IShopDatabaseService _shopDatabaseService, IShopItemsDatabaseService _shopItemsDatabaseService, IBrandsDatabaseService _brandsDatabaseService)
         {
             shopDatabaseService = _shopDatabaseService;
             shopItemsDatabaseService = _shopItemsDatabaseService;

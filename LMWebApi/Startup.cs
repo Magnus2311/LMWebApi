@@ -1,14 +1,15 @@
+using System;
 using LMWebApi.Database;
 using LMWebApi.Database.Interfaces;
 using LMWebApi.Database.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Configuration;
-using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Newtonsoft.Json;
 
 namespace LMWebApi
@@ -25,10 +26,24 @@ namespace LMWebApi
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddCors();
+
             //MSSQL Database
             services.AddDbContext<LMDbContext>();
 
-            services.AddCors();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(option =>
+                {
+                    option.SlidingExpiration = true;
+                });
+
+            services.AddControllersWithViews();
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "../../LifeMode/build";
+            });
+
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -43,30 +58,42 @@ namespace LMWebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHsts();
+            }
 
-
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
             app.UseRouting();
 
-            app.UseCors(builder => builder
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-            );
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
             });
 
-            using (var dbContext = app
-            .ApplicationServices
-            .GetRequiredService<IServiceScopeFactory>()
-            .CreateScope()
-            .ServiceProvider
-            .GetService<LMDbContext>())
+            app.UseSpa(spa =>
             {
-                dbContext.Database.Migrate();
-            }
+                spa.Options.SourcePath = "../../LifeMode";
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
+
+            app.UseCors(
+                options => options.WithOrigins("https://localhost:44312/", "https://localhost:5001/").AllowAnyMethod()
+            );
+
+            var dbContext = new LMDbContext();
+            dbContext.Database.Migrate();
+
         }
 
         private void RegisterServices(IServiceCollection services)
@@ -77,6 +104,8 @@ namespace LMWebApi
             services.AddScoped<IShopDatabaseService, ShopDatabaseService>();
             services.AddScoped<IShopItemsDatabaseService, ShopItemsDatabaseService>();
             services.AddScoped<IBrandsDatabaseService, BrandsDatabaseService>();
+            services.AddScoped<IUserDatabaseService, UserDatabaseService>();
+            services.AddScoped<IHashService, HashService>();
         }
     }
 }
