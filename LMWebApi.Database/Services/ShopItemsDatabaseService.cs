@@ -11,10 +11,10 @@ namespace LMWebApi.Database.Services
 {
     public class ShopItemsDatabaseService : IShopItemsDatabaseService
     {
-        public async Task  Add(ShopItem shopItem)
+        public async Task Add(ShopItem shopItem)
         {
             var dbContext = new LMDbContext();
-           await dbContext.ShopItems.AddAsync(shopItem);
+            await dbContext.ShopItems.AddAsync(shopItem);
             await dbContext.SaveChangesAsync();
         }
 
@@ -40,9 +40,11 @@ namespace LMWebApi.Database.Services
             shopItemToUpdate = shopItem;
             await dbContext.SaveChangesAsync();
         }
-        public IEnumerable<ShopItem> GetShopItemsByCategory(string categoryId)
+        public IEnumerable<ShopItem> GetShopItemsByCategory(int categoryId, int pageNumber)
         {
-            return new LMDbContext().ShopItems.Where(s => s.ShopCategoryId == int.Parse(categoryId)); 
+            return new LMDbContext().ShopItems
+                                    ?.Where(s => s.ShopCategoryId == categoryId)
+                                    .Take(pageNumber * 30); ;
         }
     }
 }

@@ -47,9 +47,10 @@ namespace LMWebApi.Controllers
         public async Task Delete(string shopCategoryId) => await shopDatabaseService.Delete(int.Parse(shopCategoryId));
 
         [HttpGet("shopItems")]
-        public IEnumerable<ShopItem> GetShopItemsByCategory(int categoryId)
+        public IEnumerable<ShopItem> GetShopItemsByCategory(int categoryId, int pageNumber)
         {
-            return shopItemsDatabaseService.GetShopItemsByCategory(categoryId.ToString());
+            var aaaaaaaaaa = shopItemsDatabaseService.GetShopItemsByCategory(categoryId, pageNumber);
+            return aaaaaaaaaa;
         }
 
         [HttpPost("shopItems")]
