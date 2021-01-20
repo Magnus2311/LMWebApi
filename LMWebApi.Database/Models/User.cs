@@ -7,6 +7,8 @@ namespace LMWebApi.Database.Models
 {
     public class User
     {
+        private List<string> refreshTokens = new List<string>();
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
         public string Username { get; set; }
@@ -15,19 +17,20 @@ namespace LMWebApi.Database.Models
         public DateTime CreatedDate { get; set; }
         public string RefreshTokensStr
         {
+            get { return JsonConvert.SerializeObject(refreshTokens); }
+            set { refreshTokens = JsonConvert.DeserializeObject<List<string>>(value); }
+        }
+        [NotMappedAttribute]
+        public List<string> RefreshTokens
+        {
             get
             {
-                return JsonConvert.SerializeObject(RefreshTokens);
+                return refreshTokens;
             }
             set
             {
-                if (string.IsNullOrEmpty(value))
-                    RefreshTokens = new List<string>();
-                else
-                    RefreshTokens = JsonConvert.DeserializeObject<List<string>>(value);
+                refreshTokens = value;
             }
         }
-        [NotMappedAttribute]
-        public List<string> RefreshTokens { get; set; } = new List<string>();
     }
 }
