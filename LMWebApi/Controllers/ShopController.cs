@@ -53,6 +53,12 @@ namespace LMWebApi.Controllers
             return aaaaaaaaaa;
         }
 
+        [HttpGet("shopItem")]
+        public ShopItem GetShopItem(int shopItemId)
+        {
+            return shopItemsDatabaseService.GetShopItem(shopItemId);
+        }
+
         [HttpPost("shopItems")]
         public async Task<ShopItem> Post(ShopItem shopItem)
         {

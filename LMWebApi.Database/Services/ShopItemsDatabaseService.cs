@@ -46,5 +46,10 @@ namespace LMWebApi.Database.Services
                                     ?.Where(s => s.ShopCategoryId == categoryId)
                                     .Take(pageNumber * 30); ;
         }
+
+        public ShopItem GetShopItem(int shopItemId)
+        {
+            return new LMDbContext().ShopItems.Include(s => s.Brand).FirstOrDefault(s => s.Id == shopItemId);
+        }
     }
 }
