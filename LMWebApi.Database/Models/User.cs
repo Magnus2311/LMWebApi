@@ -15,6 +15,7 @@ namespace LMWebApi.Database.Models
         public string Password { get; set; }
         public bool IsConfirmed { get; set; }
         public DateTime CreatedDate { get; set; }
+        public List<ShopItemFeedback> ShopItemFeedbacks { get; set; }
         public string RefreshTokensStr
         {
             get { return JsonConvert.SerializeObject(refreshTokens); }

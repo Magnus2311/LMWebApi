@@ -15,6 +15,7 @@ namespace LMWebApi.Database.Models
         public string Usage { get; set; }
         public decimal AvailableQuantity { get; set; }
         public decimal Price { get; set; }
+        public decimal Rating { get; set; }
         public string Image { get; set; }
 
         public int? BrandId { get; set; }
@@ -22,5 +23,7 @@ namespace LMWebApi.Database.Models
 
         public int? ShopCategoryId { get; set; }
         public ShopCategory ShopCategory { get; set; }
+
+        public List<ShopItemFeedback> Feedbacks { get; set; }
     }
 }

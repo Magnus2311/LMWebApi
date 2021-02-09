@@ -106,6 +106,7 @@ namespace LMWebApi
             services.AddScoped<IBrandsDatabaseService, BrandsDatabaseService>();
             services.AddScoped<IUserDatabaseService, UserDatabaseService>();
             services.AddScoped<IHashService, HashService>();
+            services.AddScoped<IShopItemFeedbacksDatabaseService, ShopItemFeedbacksDatabaseService>();
         }
     }
 }
