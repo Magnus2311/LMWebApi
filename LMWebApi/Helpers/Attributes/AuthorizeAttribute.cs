@@ -39,7 +39,7 @@ namespace LMWebApi.Helpers.Attributes
             {
                 var username = (handler.ReadToken(token) as JwtSecurityToken).Claims.FirstOrDefault(claim => claim.Type.Contains("name")).Value;
                 var user = _dbService.FindByUsernameAsync(username).GetAwaiter().GetResult();
-                if (user.RefreshTokens.Any(rt => rt == token))
+                if (user != null && user.RefreshTokens.Any(rt => rt == token))
                 {
                     accessSecToken = user.GenerateJwtToken();
                     SetAccessToken(accessSecToken, context);

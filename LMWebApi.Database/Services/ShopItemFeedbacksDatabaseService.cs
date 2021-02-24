@@ -27,7 +27,11 @@ namespace LMWebApi.Database.Services
             var dbContext = new LMDbContext();
             await dbContext.ShopItemFeedbacks.AddAsync(shopItemFeedback);
             await dbContext.SaveChangesAsync();
+            shopItemFeedback.ShopItem = dbContext.ShopItems.FirstOrDefault(s => s.Id == shopItemFeedback.ShopItemId);
             shopItemFeedback.User = dbContext.Users.FirstOrDefault(a =>a.Id == shopItemFeedback.UserId);
+            var feedbacks = dbContext.ShopItemFeedbacks.Where(sh => sh.ShopItemId == shopItemFeedback.ShopItemId);
+            shopItemFeedback.ShopItem.Rating = feedbacks.Sum(a => a.Rating) / feedbacks.Count();
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task Add(List<ShopItemFeedback> shopItemFeedbacks)
