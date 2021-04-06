@@ -1,10 +1,9 @@
-﻿using LMWebApi.Database.Interfaces;
-using LMWebApi.Database.Models;
+﻿using LMWebApi.Common.Models.Database;
+using LMWebApi.Database.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LMWebApi.Database.Services
@@ -18,7 +17,7 @@ namespace LMWebApi.Database.Services
 
         public IEnumerable<ShopItemFeedback> GetShopItemFeedbacks(int shopItemId)
         {
-            return new LMDbContext().ShopItemFeedbacks.Include(sh => sh.User).Where(s => s.ShopItemId == shopItemId).OrderByDescending(a=>a.Date);
+            return new LMDbContext().ShopItemFeedbacks.Include(sh => sh.User).Where(s => s.ShopItemId == shopItemId).OrderByDescending(a => a.Date);
         }
 
         public async Task Add(ShopItemFeedback shopItemFeedback)
@@ -28,7 +27,7 @@ namespace LMWebApi.Database.Services
             await dbContext.ShopItemFeedbacks.AddAsync(shopItemFeedback);
             await dbContext.SaveChangesAsync();
             shopItemFeedback.ShopItem = dbContext.ShopItems.FirstOrDefault(s => s.Id == shopItemFeedback.ShopItemId);
-            shopItemFeedback.User = dbContext.Users.FirstOrDefault(a =>a.Id == shopItemFeedback.UserId);
+            shopItemFeedback.User = dbContext.Users.FirstOrDefault(a => a.Id == shopItemFeedback.UserId);
             var feedbacks = dbContext.ShopItemFeedbacks.Where(sh => sh.ShopItemId == shopItemFeedback.ShopItemId);
             shopItemFeedback.ShopItem.Rating = feedbacks.Sum(a => a.Rating) / feedbacks.Count();
             await dbContext.SaveChangesAsync();
@@ -36,7 +35,7 @@ namespace LMWebApi.Database.Services
 
         public async Task Add(List<ShopItemFeedback> shopItemFeedbacks)
         {
-            foreach(var item in shopItemFeedbacks)
+            foreach (var item in shopItemFeedbacks)
                 item.Date = DateTime.Now;
 
             var dbContext = new LMDbContext();

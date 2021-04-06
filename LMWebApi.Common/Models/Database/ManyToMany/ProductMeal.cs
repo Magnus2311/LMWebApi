@@ -1,4 +1,4 @@
-namespace LMWebApi.Database.Models
+namespace LMWebApi.Common.Models.Database
 {
     public class ProductMeal
     {

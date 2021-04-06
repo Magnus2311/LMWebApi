@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace LMWebApi.Database.Models
+namespace LMWebApi.Common.Models.Database
 {
     public class User
     {

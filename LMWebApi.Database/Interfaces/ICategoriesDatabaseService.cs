@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using LMWebApi.Database.Models;
+using LMWebApi.Common.Models.Database;
 
 public interface ICategoriesDatabaseService
 {

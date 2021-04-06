@@ -1,5 +1,4 @@
-﻿using System.Net.NetworkInformation;
-using LMWebApi.Database.Models;
+﻿using LMWebApi.Common.Models.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace LMWebApi.Database

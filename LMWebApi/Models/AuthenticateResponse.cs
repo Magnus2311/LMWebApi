@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using LMWebApi.Database.Models;
+using LMWebApi.Common.Models.Database;
 
 namespace LMWebApi.Models
 {

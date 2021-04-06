@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using LMWebApi.Common.Models.Database;
 using LMWebApi.Database;
-using LMWebApi.Database.Models;
 using Microsoft.EntityFrameworkCore;
 
 public class CategoriesDatabaseService : ICategoriesDatabaseService

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace LMWebApi.Database.Models
+namespace LMWebApi.Common.Models.Database
 {
     public class ShopItem
     {

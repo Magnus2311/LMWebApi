@@ -4,9 +4,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
+using LMWebApi.Common.Helpers;
+using LMWebApi.Common.Iterfaces;
+using LMWebApi.Common.Services;
 using LMWebApi.Database.Interfaces;
 using LMWebApi.Database.Services;
-using LMWebApi.Helpers.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -18,12 +20,14 @@ namespace LMWebApi.Helpers.Attributes
     public class AuthorizeAttribute : Attribute, IAuthorizationFilter
     {
         private readonly IUserDatabaseService _dbService;
+        private readonly ITokenizer _tokenizer;
         private AuthorizationFilterContext _context;
         private string accessSecToken;
 
         public AuthorizeAttribute()
         {
             _dbService = new UserDatabaseService();
+            _tokenizer = new Tokenizer();
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
@@ -41,7 +45,7 @@ namespace LMWebApi.Helpers.Attributes
                 var user = _dbService.FindByUsernameAsync(username).GetAwaiter().GetResult();
                 if (user != null && user.RefreshTokens.Any(rt => rt == token))
                 {
-                    accessSecToken = user.GenerateJwtToken();
+                    accessSecToken = _tokenizer.GenerateUserJwtToken(user);
                     SetAccessToken(accessSecToken, context);
                     return;
                 }
@@ -53,7 +57,7 @@ namespace LMWebApi.Helpers.Attributes
         private bool ValidateToken(string authToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var validationParameters = GetValidationParameters();
+            var validationParameters = _tokenizer.GetValidationParameters();
 
             try
             {
@@ -66,19 +70,6 @@ namespace LMWebApi.Helpers.Attributes
             {
                 return false;
             }
-        }
-
-        private TokenValidationParameters GetValidationParameters()
-        {
-            return new TokenValidationParameters()
-            {
-                ValidateLifetime = true,
-                ValidateAudience = true,
-                ValidateIssuer = true,
-                ValidIssuer = AppSettings.ValidIssuer,
-                ValidAudience = AppSettings.ValidAudience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AppSettings.Secret))
-            };
         }
 
         private void SetAccessToken(string accessToken, AuthorizationFilterContext context)

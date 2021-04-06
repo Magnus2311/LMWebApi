@@ -1,13 +1,16 @@
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using LMWebApi.Common.Iterfaces;
+using LMWebApi.Common.Models.Database;
 using LMWebApi.Database.Interfaces;
-using LMWebApi.Database.Models;
+using LMWebApi.Emails.Interfaces;
 using LMWebApi.Helpers.Attributes;
-using LMWebApi.Helpers.Extensions;
 using LMWebApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FutbotReact.Controllers
 {
@@ -16,15 +19,25 @@ namespace FutbotReact.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserDatabaseService _dbService;
+        private readonly IEmailsService _emailsService;
+        private readonly ITokenizer _tokenizer;
 
-        public UsersController(IUserDatabaseService dbService)
+        public UsersController(IUserDatabaseService dbService,
+            IEmailsService emailsService,
+            ITokenizer tokenizer)
         {
             _dbService = dbService;
+            _emailsService = emailsService;
+            _tokenizer = tokenizer;
         }
 
         [HttpPost("add")]
         public async Task Add(User user)
-            => await _dbService.Add(user);
+        {
+            var host = Request.Host.ToString();
+            await _emailsService.SendRegistrationEmail(Request.Host.ToString(), user.Username);
+            await _dbService.Add(user);
+        }
 
         [HttpDelete("delete")]
         public async Task Delete(string username)
@@ -36,8 +49,8 @@ namespace FutbotReact.Controllers
             var isSuccessful = await _dbService.Login(user);
             if (isSuccessful)
             {
-                var token = user.GenerateJwtToken();
-                var refreshToken = user.GenerateJwtToken(true);
+                var token = _tokenizer.GenerateUserJwtToken(user);
+                var refreshToken = _tokenizer.GenerateUserJwtToken(user, true);
                 user.RefreshTokens.Add(refreshToken);
                 await _dbService.UpdateRefreshToken(user);
                 // SetAccessTokenInCookie(token);
@@ -62,6 +75,18 @@ namespace FutbotReact.Controllers
             await _dbService.UpdateRefreshToken(user);
             HttpContext.Response.Cookies.Delete("access_token");
             HttpContext.Response.Cookies.Delete("refresh_token");
+            return Ok();
+        }
+
+        [HttpPost("confirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(string token)
+        {
+            if (!_tokenizer.ValidateToken(token)) return BadRequest();
+
+            var claims = _tokenizer.DecodeToken(token).ToDictionary(x => x.Key, x => x.Value);
+            var email = claims[ClaimTypes.Email];
+
+            await _dbService.ConfirmEmailAsync(email);
             return Ok();
         }
 
