@@ -6,7 +6,7 @@ namespace LMWebApi.Common.Iterfaces
 {
     public interface ITokenizer
     {
-        string CreateRegistrationToken(string email, string redirectUrl);
+        string CreateRegistrationToken(string email);
         IEnumerable<KeyValuePair<string, string>> DecodeToken(string token);
         string GenerateUserJwtToken(User user, bool isRefreshToken = false);
         TokenValidationParameters GetValidationParameters();

@@ -9,7 +9,7 @@ namespace LMWebApi.Emails.Services
     // Трябва да се създаде domain и да може да се потвърди в SendGrid, за да работи
     public class SendGridEmailsService : IEmailsService
     {
-        public Task ReSendRegistrationEmail(string url, string email)
+        public Task ReSendRegistrationEmail(string url, string email, string token)
         {
             throw new NotImplementedException();
         }
@@ -27,7 +27,7 @@ namespace LMWebApi.Emails.Services
             var response = await client.SendEmailAsync(msg);
         }
 
-        public Task SendRegistrationEmail(string url, string email)
+        public Task SendRegistrationEmail(string url, string email, string token)
         {
             throw new NotImplementedException();
         }

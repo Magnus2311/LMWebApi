@@ -23,16 +23,16 @@ namespace LMWebApi.Emails.Services
             };
         }
 
-        public async Task ReSendRegistrationEmail(string url, string email)
+        public async Task ReSendRegistrationEmail(string url, string email, string token)
         {
-            var message = new MailMessage(FROM_EMAIL, email, "New confirmation email from Life Mode", $"{url}/user/confirmEmail");
+            var message = new MailMessage(FROM_EMAIL, email, "New confirmation email from Life Mode", $"{url}/user/confirmEmail/{email}&{token}");
             message.IsBodyHtml = true;
             await _smtpClient.SendMailAsync(message);
         }
 
-        public async Task SendRegistrationEmail(string url, string email)
+        public async Task SendRegistrationEmail(string url, string email, string token)
         {
-            var message = new MailMessage(FROM_EMAIL, email, "Welcome to Life Mode", $"{url}/user/confirmEmail");
+            var message = new MailMessage(FROM_EMAIL, email, "Welcome to Life Mode", $"{url}/user/confirmEmail/{email}&{token}");
             message.IsBodyHtml = true;
             await _smtpClient.SendMailAsync(message);
         }

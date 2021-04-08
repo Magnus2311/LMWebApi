@@ -20,7 +20,7 @@ namespace LMWebApi.Common.Services
             InitHeader();
         }
 
-        public string CreateRegistrationToken(string email, string redirectUrl)
+        public string CreateRegistrationToken(string email)
         {
             var authClaims = new List<Claim>
             {

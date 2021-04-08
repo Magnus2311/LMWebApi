@@ -35,7 +35,8 @@ namespace FutbotReact.Controllers
         public async Task Add(User user)
         {
             var host = Request.Host.ToString();
-            await _emailsService.SendRegistrationEmail(Request.Host.ToString(), user.Username);
+            var token = _tokenizer.CreateRegistrationToken(user.Username);
+            await _emailsService.SendRegistrationEmail(Request.Host.ToString(), user.Username, token);
             await _dbService.Add(user);
         }
 
