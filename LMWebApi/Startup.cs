@@ -1,4 +1,6 @@
 using System;
+using LMWebApi.Common.Iterfaces;
+using LMWebApi.Common.Services;
 using LMWebApi.Database;
 using LMWebApi.Database.Interfaces;
 using LMWebApi.Database.Services;
@@ -110,6 +112,7 @@ namespace LMWebApi
             services.AddScoped<IHashService, HashService>();
             services.AddScoped<IShopItemFeedbacksDatabaseService, ShopItemFeedbacksDatabaseService>();
             services.AddScoped<IEmailsService, GmailSmtpEmailsService>();
+            services.AddScoped<ITokenizer, Tokenizer>();
         }
     }
 }

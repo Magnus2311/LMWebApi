@@ -37,7 +37,7 @@ namespace FutbotReact.Controllers
             var host = Request.Host.ToString();
             var token = _tokenizer.CreateRegistrationToken(user.Username);
             await _emailsService.SendRegistrationEmail(Request.Host.ToString(), user.Username, token);
-            await _dbService.Add(user);
+            //await _dbService.Add(user);
         }
 
         [HttpDelete("delete")]
@@ -89,6 +89,14 @@ namespace FutbotReact.Controllers
 
             await _dbService.ConfirmEmailAsync(email);
             return Ok();
+        }
+
+        [HttpPost("sendSecondaryConfirmationEmail")]
+        public async Task SecondaryConfirmationEmail(string email)
+        {
+            var host = Request.Host.ToString();
+            var token = _tokenizer.CreateRegistrationToken(email);
+            await _emailsService.SendRegistrationEmail(Request.Host.ToString(), email, token);
         }
 
         private void SetRefreshTokenInCookie(string refreshToken)
