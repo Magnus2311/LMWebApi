@@ -27,7 +27,7 @@ namespace LMWebApi.Emails.Services
             var response = await client.SendEmailAsync(msg);
         }
 
-        public Task SendRegistrationEmail(string url, string email, string token)
+        public Task SendRegistrationEmail(string url, string email, string token, string template)
         {
             throw new NotImplementedException();
         }

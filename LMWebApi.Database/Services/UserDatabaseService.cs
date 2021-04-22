@@ -54,7 +54,7 @@ namespace LMWebApi.Database.Services
         public async Task<bool> Login(User user)
         {
             var dbUser = await FindByUsernameAsync(user.Username);
-            return _hasher.VerifyPassword(dbUser.Password, user.Password);
+            return _hasher.VerifyPassword(dbUser.Password, user.Password) && dbUser.IsConfirmed;
         }
 
         public async Task UpdateRefreshToken(User user)

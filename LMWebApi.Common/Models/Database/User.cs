@@ -33,5 +33,7 @@ namespace LMWebApi.Common.Models.Database
                 refreshTokens = value;
             }
         }
+        [NotMappedAttribute]
+        public string Template { get; set; }
     }
 }

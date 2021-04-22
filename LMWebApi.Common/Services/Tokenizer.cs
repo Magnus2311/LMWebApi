@@ -45,7 +45,7 @@ namespace LMWebApi.Common.Services
             SecurityToken validatedToken;
             IPrincipal principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
 
-            var claimsIdentity = (ClaimsIdentity)principal;
+            var claimsIdentity = (ClaimsPrincipal)principal;
             foreach (var claim in claimsIdentity.Claims)
                 yield return new KeyValuePair<string, string>(claim.Type, claim.Value);
 

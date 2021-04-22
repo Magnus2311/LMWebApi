@@ -36,8 +36,8 @@ namespace FutbotReact.Controllers
         {
             var host = Request.Host.ToString();
             var token = _tokenizer.CreateRegistrationToken(user.Username);
-            await _emailsService.SendRegistrationEmail(Request.Host.ToString(), user.Username, token);
-            //await _dbService.Add(user);
+            await _emailsService.SendRegistrationEmail(Request.Host.ToString(), user.Username, token, user.Template);
+            await _dbService.Add(user);
         }
 
         [HttpDelete("delete")]
@@ -54,7 +54,7 @@ namespace FutbotReact.Controllers
                 var refreshToken = _tokenizer.GenerateUserJwtToken(user, true);
                 user.RefreshTokens.Add(refreshToken);
                 await _dbService.UpdateRefreshToken(user);
-                // SetAccessTokenInCookie(token);
+                SetAccessTokenInCookie(token);
                 SetRefreshTokenInCookie(refreshToken);
 
                 return Ok(new AuthenticateResponse(user, token.ToString()));
@@ -79,15 +79,19 @@ namespace FutbotReact.Controllers
             return Ok();
         }
 
-        [HttpPost("confirmEmail")]
-        public async Task<IActionResult> ConfirmEmail(string token)
+        [HttpGet("confirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(string email, string token)
         {
             if (!_tokenizer.ValidateToken(token)) return BadRequest();
 
             var claims = _tokenizer.DecodeToken(token).ToDictionary(x => x.Key, x => x.Value);
-            var email = claims[ClaimTypes.Email];
+            var tempEmail = claims[ClaimTypes.Email];
 
-            await _dbService.ConfirmEmailAsync(email);
+            if (email.ToUpper() == tempEmail.ToUpper())
+                await _dbService.ConfirmEmailAsync(email);
+            else
+                return BadRequest();
+
             return Ok();
         }
 
@@ -96,7 +100,7 @@ namespace FutbotReact.Controllers
         {
             var host = Request.Host.ToString();
             var token = _tokenizer.CreateRegistrationToken(email);
-            await _emailsService.SendRegistrationEmail(Request.Host.ToString(), email, token);
+            await _emailsService.ReSendRegistrationEmail(Request.Host.ToString(), email, token);
         }
 
         private void SetRefreshTokenInCookie(string refreshToken)
