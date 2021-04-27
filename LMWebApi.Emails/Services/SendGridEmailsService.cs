@@ -31,5 +31,10 @@ namespace LMWebApi.Emails.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task SendResetPasswordEmail(string url, string email, string token, string template)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

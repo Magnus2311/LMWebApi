@@ -6,5 +6,6 @@ namespace LMWebApi.Emails.Interfaces
     {
         Task SendRegistrationEmail(string url, string email, string token, string template);
         Task ReSendRegistrationEmail(string url, string email, string token);
+        Task SendResetPasswordEmail(string url, string email, string token, string template);
     }
 }

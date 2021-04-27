@@ -47,6 +47,18 @@ namespace LMWebApi.Emails.Services
             await _smtpClient.SendMailAsync(message);
         }
 
+        public async Task SendResetPasswordEmail(string url, string email, string token, string template)
+        {
+            var message = new MailMessage(FROM_EMAIL, email)
+            {
+                Subject = "Reset password for Life Mode"
+            };
+            message.IsBodyHtml = true;
+            message.AlternateViews.Add(GetEmbeddedImage("./Images/logo_transparent.png", template, token));
+
+            await _smtpClient.SendMailAsync(message);
+        }
+
         private AlternateView GetEmbeddedImage(String filePath, string template, string token)
         {
             LinkedResource res = new LinkedResource(filePath);
