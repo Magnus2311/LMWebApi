@@ -57,6 +57,16 @@ namespace LMWebApi.Database.Services
             return _hasher.VerifyPassword(dbUser.Password, user.Password) && dbUser.IsConfirmed;
         }
 
+        public async Task<bool> TryChangePasswordAsync(User user, string newPassword)
+        {
+            var context = new LMDbContext();
+            var dbUser = await context.Users
+                .FirstOrDefaultAsync(u => u.Username.ToUpper() == user.Username.ToUpper());
+            dbUser.Password = _hasher.HashPassword(newPassword);
+            await context.SaveChangesAsync();
+            return true;
+        }
+
         public async Task UpdateRefreshToken(User user)
         {
             var context = new LMDbContext();

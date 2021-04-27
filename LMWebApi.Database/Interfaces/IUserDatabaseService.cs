@@ -13,5 +13,6 @@ namespace LMWebApi.Database.Interfaces
         Task UpdateRefreshToken(User user);
         Task Delete(string username);
         Task ConfirmEmailAsync(string email);
+        Task<bool> TryChangePasswordAsync(User user, string newPassword);
     }
 }
