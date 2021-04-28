@@ -1,7 +1,11 @@
 using System;
+using LMWebApi.Common.Iterfaces;
+using LMWebApi.Common.Services;
 using LMWebApi.Database;
 using LMWebApi.Database.Interfaces;
 using LMWebApi.Database.Services;
+using LMWebApi.Emails.Interfaces;
+using LMWebApi.Emails.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -107,6 +111,8 @@ namespace LMWebApi
             services.AddScoped<IUserDatabaseService, UserDatabaseService>();
             services.AddScoped<IHashService, HashService>();
             services.AddScoped<IShopItemFeedbacksDatabaseService, ShopItemFeedbacksDatabaseService>();
+            services.AddScoped<IEmailsService, GmailSmtpEmailsService>();
+            services.AddScoped<ITokenizer, Tokenizer>();
         }
     }
 }

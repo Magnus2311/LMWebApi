@@ -26,4 +26,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LMWebApi.Common\LMWebApi.Common.csproj" />
+  </ItemGroup>
+
 </Project>

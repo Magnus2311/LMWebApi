@@ -1,7 +1,5 @@
-﻿using LMWebApi.Database.Models;
-using System;
+﻿using LMWebApi.Common.Models.Database;
 using System.Collections.Generic;
-using System.Text;
 
 namespace LMWebApi.Database.Interfaces
 {

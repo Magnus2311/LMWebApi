@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace LMWebApi.Database.Models
+namespace LMWebApi.Common.Models.Database
 {
     public class User
     {
@@ -33,5 +33,7 @@ namespace LMWebApi.Database.Models
                 refreshTokens = value;
             }
         }
+        [NotMappedAttribute]
+        public string Template { get; set; }
     }
 }

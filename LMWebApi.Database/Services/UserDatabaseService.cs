@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LMWebApi.Common.Models.Database;
 using LMWebApi.Database.Interfaces;
-using LMWebApi.Database.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -21,6 +21,14 @@ namespace LMWebApi.Database.Services
             var context = new LMDbContext();
             user.Password = _hasher.HashPassword(user.Password);
             await context.Users.AddAsync(user);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task ConfirmEmailAsync(string email)
+        {
+            var context = new LMDbContext();
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Username.ToUpper() == email.ToUpper());
+            user.IsConfirmed = true;
             await context.SaveChangesAsync();
         }
 
@@ -46,7 +54,7 @@ namespace LMWebApi.Database.Services
         public async Task<bool> Login(User user)
         {
             var dbUser = await FindByUsernameAsync(user.Username);
-            return _hasher.VerifyPassword(dbUser.Password, user.Password);
+            return _hasher.VerifyPassword(dbUser.Password, user.Password) && dbUser.IsConfirmed;
         }
 
         public async Task UpdateRefreshToken(User user)

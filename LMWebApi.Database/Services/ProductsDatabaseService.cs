@@ -1,5 +1,5 @@
-﻿using LMWebApi.Database.Interfaces;
-using LMWebApi.Database.Models;
+﻿using LMWebApi.Common.Models.Database;
+using LMWebApi.Database.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;

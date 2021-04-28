@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LMWebApi.Database.Models
+namespace LMWebApi.Common.Models.Database
 {
 
     public class Sterols

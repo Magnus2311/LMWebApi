@@ -1,5 +1,4 @@
-﻿using System.Net.NetworkInformation;
-using LMWebApi.Database.Models;
+﻿using LMWebApi.Common.Models.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace LMWebApi.Database
@@ -93,7 +92,7 @@ namespace LMWebApi.Database
         {
             base.OnConfiguring(builder);
 
-            builder.UseSqlServer("Server=.;Database=LifeMode;User Id=sa;Password=Micr0!nvest;");
+            builder.UseSqlServer("Server=.;Database=LifeMode;Integrated Security=True;");
         }
     }
 }

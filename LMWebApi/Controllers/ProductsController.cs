@@ -2,8 +2,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LMWebApi.Database.Interfaces;
 using System.Collections.Generic;
-using LMWebApi.Database.Models;
 using System;
+using LMWebApi.Common.Models.Database;
 
 namespace LMWebApi.Controllers
 {

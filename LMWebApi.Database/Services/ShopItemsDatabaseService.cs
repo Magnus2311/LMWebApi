@@ -1,10 +1,8 @@
-﻿using LMWebApi.Database.Interfaces;
-using LMWebApi.Database.Models;
+﻿using LMWebApi.Common.Models.Database;
+using LMWebApi.Database.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LMWebApi.Database.Services

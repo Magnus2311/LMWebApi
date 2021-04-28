@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LMWebApi.Common.Models.Database;
 using LMWebApi.Database.Interfaces;
-using LMWebApi.Database.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LMWebApi.Controllers

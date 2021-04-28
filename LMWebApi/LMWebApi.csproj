@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LMWebApi.Database\LMWebApi.Database.csproj" />
+    <ProjectReference Include="..\LMWebApi.Emails\LMWebApi.Emails.csproj" />
+    <ProjectReference Include="..\LMWebApi.Common\LMWebApi.Common.csproj" />
   </ItemGroup>
 
 </Project>
