@@ -103,6 +103,19 @@ namespace FutbotReact.Controllers
             await _emailsService.ReSendRegistrationEmail(Request.Host.ToString(), email, token);
         }
 
+        [HttpPost("changePassword")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword(ChangePassParams passes)
+        {
+            var user = await _dbService.FindByUsernameAsync(HttpContext.User.Identity.Name);
+            user.Password = passes.OldPassword;
+            if (await _dbService.Login(user))
+                if (await _dbService.TryChangePasswordAsync(user, passes.NewPassword))
+                    return Ok();
+
+            return BadRequest();
+        }
+
         private void SetRefreshTokenInCookie(string refreshToken)
         {
             var cookieOptions = new CookieOptions
@@ -120,6 +133,12 @@ namespace FutbotReact.Controllers
                 Expires = DateTime.Now.AddHours(1),
             };
             Response.Cookies.Append("refresh_token", accessToken, cookieOptions);
+        }
+
+        public class ChangePassParams
+        {
+            public string OldPassword { get; set; }
+            public string NewPassword { get; set; }
         }
     }
 }
