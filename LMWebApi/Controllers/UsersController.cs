@@ -111,6 +111,16 @@ namespace FutbotReact.Controllers
             await _emailsService.SendResetPasswordEmail(Request.Host.ToString(), user.Username, token, user.Template);
         }
 
+        [HttpGet("checkResetPassword")]
+        public IActionResult CheckResetPasswordToken(string token)
+        {
+            if (!_tokenizer.ValidateToken(token)) return BadRequest();
+
+            var claims = _tokenizer.DecodeToken(token).ToDictionary(x => x.Key, x => x.Value);
+            var email = claims[ClaimTypes.Email];
+            return Ok(email);
+        }
+
         [HttpPost("changePassword")]
         [Authorize]
         public async Task<IActionResult> ChangePassword(ChangePassParams passes)
