@@ -103,6 +103,24 @@ namespace FutbotReact.Controllers
             await _emailsService.ReSendRegistrationEmail(Request.Host.ToString(), email, token);
         }
 
+        [HttpPost("sendResetPasswordEmail")]
+        public async Task ResetPasswordEmail(User user)
+        {
+            var host = Request.Host.ToString();
+            var token = _tokenizer.CreateRegistrationToken(user.Username);
+            await _emailsService.SendResetPasswordEmail(Request.Host.ToString(), user.Username, token, user.Template);
+        }
+
+        [HttpGet("checkResetPassword")]
+        public IActionResult CheckResetPasswordToken(string token)
+        {
+            if (!_tokenizer.ValidateToken(token)) return BadRequest();
+
+            var claims = _tokenizer.DecodeToken(token).ToDictionary(x => x.Key, x => x.Value);
+            var email = claims[ClaimTypes.Email];
+            return Ok(email);
+        }
+
         [HttpPost("changePassword")]
         [Authorize]
         public async Task<IActionResult> ChangePassword(ChangePassParams passes)
@@ -112,6 +130,19 @@ namespace FutbotReact.Controllers
             if (await _dbService.Login(user))
                 if (await _dbService.TryChangePasswordAsync(user, passes.NewPassword))
                     return Ok();
+
+            return BadRequest();
+        }
+
+        [HttpPost("resetPassword")]
+        public async Task<IActionResult> ResetPassword(ResetPassParams passes)
+        {
+            if (!_tokenizer.ValidateToken(passes.Token)) return BadRequest();
+
+            var username = _tokenizer.DecodeToken(passes.Token).ToDictionary(x => x.Key, x => x.Value)[ClaimTypes.Email];
+            var user = await _dbService.FindByUsernameAsync(username);
+            if (await _dbService.TryChangePasswordAsync(user, passes.NewPassword))
+                return Ok();
 
             return BadRequest();
         }
@@ -138,6 +169,12 @@ namespace FutbotReact.Controllers
         public class ChangePassParams
         {
             public string OldPassword { get; set; }
+            public string NewPassword { get; set; }
+        }
+
+        public class ResetPassParams
+        {
+            public string Token { get; set; }
             public string NewPassword { get; set; }
         }
     }
