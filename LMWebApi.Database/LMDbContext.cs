@@ -13,6 +13,8 @@ namespace LMWebApi.Database
         public DbSet<Brand> Brands { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<ShopItemFeedback> ShopItemFeedbacks { get; set; }
+        public DbSet<KnowledgeCategory> KnowledgeCategories { get; set; }
+        public DbSet<Article> Articles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -86,6 +88,13 @@ namespace LMWebApi.Database
 
             builder.Entity<ProductMeal>()
                 .HasKey(pm => new { pm.ProductId, pm.MealId });
+
+            builder.Entity<KnowledgeCategory>()
+                .HasOne(c => c.Parent)
+                .WithMany(c => c.SubCategories)
+                .HasForeignKey(c => c.ParentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
