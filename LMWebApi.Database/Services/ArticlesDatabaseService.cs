@@ -11,6 +11,10 @@ namespace LMWebApi.Database.Services
 {
     public class ArticlesDatabaseService : IArticlesDatabaseService
     {
+        public async Task<Article> GetArticle(int articleId)
+        {
+            return await new LMDbContext().Articles.Include(a=>a.KnowledgeCategory).FirstOrDefaultAsync(a => a.Id == articleId);
+        }
 
         public IEnumerable<Article> GetAllArticles()
         {
@@ -19,7 +23,7 @@ namespace LMWebApi.Database.Services
 
         public IEnumerable<Article> GetArticlesByCategory(int categoryId,int pageNumber)
         {
-            return new LMDbContext().Articles?.Where(a => a.KnowledgeCategoryId == categoryId).Take(pageNumber*30);
+            return new LMDbContext().Articles?.Where(a => a.KnowledgeCategoryId == categoryId).Take(pageNumber * 30);
         }
 
         public async Task Add(Article article)

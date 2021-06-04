@@ -11,6 +11,7 @@ namespace LMWebApi.Common.Models.Database
         public string Image { get; set; }
         public string Content { get; set; }
         public int? KnowledgeCategoryId { get; set; }
+        public string Description { get; set; }
         public KnowledgeCategory KnowledgeCategory { get; set; }
     }
 }

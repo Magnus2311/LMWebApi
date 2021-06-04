@@ -30,6 +30,13 @@ namespace LMWebApi.Controllers
             return knowledge == null ? new List<KnowledgeCategory>() : knowledge;
         }
 
+        [HttpGet("article")]
+        public async Task<Article> GetArticle(int articleId)
+        {
+            var article = await articlesDatabaseService.GetArticle(articleId);
+            return article;
+        }
+
         [HttpGet("articles")]
         public IEnumerable<Article> GetArticles(int knowledgeCategoryId, int pageNumber)
         {
@@ -53,5 +60,17 @@ namespace LMWebApi.Controllers
 
         [HttpDelete]
         public async Task Delete(string categoryId) => await knowledgeDatabaseService.Delete(categoryId);
+
+        [HttpPost("article")]
+        public async Task<Article> PostArticle(Article article)
+        {
+            if (ModelState.IsValid)
+            {
+                await articlesDatabaseService.Add(article);
+                return article;
+            }
+            throw new Exception();
+        }
+
     }
 }

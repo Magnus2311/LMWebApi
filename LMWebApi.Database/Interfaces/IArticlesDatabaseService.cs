@@ -8,6 +8,7 @@ namespace LMWebApi.Database.Interfaces
 {
     public interface IArticlesDatabaseService
     {
+        Task<Article> GetArticle(int articleId);
         IEnumerable<Article> GetAllArticles();
         IEnumerable<Article> GetArticlesByCategory(int categoryId, int pageNumber);
         Task Add(Article article);
