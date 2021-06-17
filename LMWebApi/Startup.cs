@@ -113,6 +113,8 @@ namespace LMWebApi
             services.AddScoped<IEmailsService, GmailSmtpEmailsService>();
             services.AddScoped<ITokenizer, Tokenizer>();
             services.AddScoped<INutritionDatabaseService, NutritionDatabaseService>();
+            services.AddScoped<IKnowledgeDatabaseService, KnowledgeDatabaseService>();
+            services.AddScoped<IArticlesDatabaseService, ArticlesDatabaseService>();
         }
     }
 }

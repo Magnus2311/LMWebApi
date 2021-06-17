@@ -4,14 +4,16 @@ using LMWebApi.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LMWebApi.Database.Migrations
 {
     [DbContext(typeof(LMDbContext))]
-    partial class LMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210527071843_AddedKnowledgeCategories")]
+    partial class AddedKnowledgeCategories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,35 +88,6 @@ namespace LMWebApi.Database.Migrations
                         .HasFilter("[ProductInfoId] IS NOT NULL");
 
                     b.ToTable("AminoAcids");
-                });
-
-            modelBuilder.Entity("LMWebApi.Common.Models.Database.Article", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("KnowledgeCategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("KnowledgeCategoryId");
-
-                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("LMWebApi.Common.Models.Database.Brand", b =>
@@ -652,13 +625,6 @@ namespace LMWebApi.Database.Migrations
                     b.HasOne("LMWebApi.Common.Models.Database.ProductInfo", "ProductInfo")
                         .WithOne("AminoAcids")
                         .HasForeignKey("LMWebApi.Common.Models.Database.AminoAcids", "ProductInfoId");
-                });
-
-            modelBuilder.Entity("LMWebApi.Common.Models.Database.Article", b =>
-                {
-                    b.HasOne("LMWebApi.Common.Models.Database.KnowledgeCategory", "KnowledgeCategory")
-                        .WithMany("Articles")
-                        .HasForeignKey("KnowledgeCategoryId");
                 });
 
             modelBuilder.Entity("LMWebApi.Common.Models.Database.Carbohydrates", b =>

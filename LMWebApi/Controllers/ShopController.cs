@@ -47,8 +47,7 @@ namespace LMWebApi.Controllers
         [HttpGet("shopItems")]
         public IEnumerable<ShopItem> GetShopItemsByCategory(int categoryId, int pageNumber)
         {
-            var aaaaaaaaaa = shopItemsDatabaseService.GetShopItemsByCategory(categoryId, pageNumber);
-            return aaaaaaaaaa;
+            return shopItemsDatabaseService.GetShopItemsByCategory(categoryId, pageNumber);
         }
 
         [HttpGet("shopItem")]

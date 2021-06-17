@@ -28,7 +28,10 @@ public class CategoriesDatabaseService : ICategoriesDatabaseService
         await dbContext.SaveChangesAsync();
     }
 
-    public IEnumerable<Category> GetAll() => new LMDbContext().Categories;
+    public IEnumerable<Category> GetAll()
+    {
+        return new LMDbContext().Categories;
+    }
 
     public async Task Update(Category category)
     {
