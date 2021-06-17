@@ -15,7 +15,8 @@ namespace LMWebApi.Common.Models.Database
         public string Password { get; set; }
         public bool IsConfirmed { get; set; }
         public DateTime CreatedDate { get; set; }
-        public List<ShopItemFeedback> ShopItemFeedbacks { get; set; }
+        public List<ShopItemFeedback> ShopItemFeedbacks { get; set; } = new List<ShopItemFeedback>();
+        public List<DailyNutrition> DailyNutritions { get; set; } = new List<DailyNutrition>();
         public string RefreshTokensStr
         {
             get { return JsonConvert.SerializeObject(refreshTokens); }

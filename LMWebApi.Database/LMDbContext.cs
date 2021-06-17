@@ -7,7 +7,7 @@ namespace LMWebApi.Database
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Meal> Meals { get; set; }
+        public DbSet<DailyNutrition> DailyNutritions { get; set; }
         public DbSet<ShopCategory> ShopCategories { get; set; }
         public DbSet<ShopItem> ShopItems { get; set; }
         public DbSet<Brand> Brands { get; set; }
@@ -84,8 +84,15 @@ namespace LMWebApi.Database
                 .WithMany(v => v.ShopItemFeedbacks)
                 .HasForeignKey(v => v.UserId);
 
-            builder.Entity<ProductMeal>()
-                .HasKey(pm => new { pm.ProductId, pm.MealId });
+            builder.Entity<DailyNutrition>()
+                .HasOne(dn => dn.Product)
+                .WithMany(p => p.DailyNutritions)
+                .HasForeignKey(dn => dn.ProductId);
+
+            builder.Entity<DailyNutrition>()
+                .HasOne(dn => dn.User)
+                .WithMany(p => p.DailyNutritions)
+                .HasForeignKey(dn => dn.UserId);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
