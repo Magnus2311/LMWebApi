@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LMWebApi.Common.Models.Database;
 using LMWebApi.Database.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using LMWebApi.Common.Models.Global;
 
 namespace LMWebApi.Database.Services
 {
@@ -18,23 +19,23 @@ namespace LMWebApi.Database.Services
             return dailyNutrition;
         }
 
-        public async Task<IEnumerable<DailyNutrition>> Get(User user, DateTime fromDate, DateTime toDate) =>
+        public async Task<IEnumerable<DailyNutrition>> Get(DateTime fromDate, DateTime toDate) =>
              await new LMDbContext()
                 .DailyNutritions
-                .Where(dn => dn.UserId == user.Id
+                .Where(dn => dn.UserId == GlobalHelpers.CurrentUser.Id
                             && dn.Date >= fromDate.Date
                             && dn.Date <= toDate.Date)
                 .ToListAsync();
 
-        public async Task<IEnumerable<DailyNutrition>> GetAll(User user) =>
+        public async Task<IEnumerable<DailyNutrition>> GetAll() =>
              await new LMDbContext()
                 .DailyNutritions
-                .Where(dn => dn.UserId == user.Id)
+                .Where(dn => dn.UserId == GlobalHelpers.CurrentUser.Id)
                 .ToListAsync();
 
-        public async Task Delete(User user, string nutritionId)
+        public async Task Delete(string nutritionId)
         {
-            if (user.DailyNutritions.Any(dn => dn.Id == nutritionId))
+            if (GlobalHelpers.CurrentUser.DailyNutritions.Any(dn => dn.Id == nutritionId))
             {
                 var context = new LMDbContext();
                 var dailyNutrition = await context.DailyNutritions.FirstOrDefaultAsync(dn => dn.Id == nutritionId);

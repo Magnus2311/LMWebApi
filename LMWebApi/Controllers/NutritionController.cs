@@ -26,8 +26,7 @@ namespace LMWebApi.Controllers
         [HttpGet]
         public async Task<IEnumerable<DailyNutrition>> GetAll()
         {
-            var user = await _userDatabaseService.FindByUsernameAsync(HttpContext.User.Identity.Name);
-            return await _nutritionDatabaseService.GetAll(user);
+            return await _nutritionDatabaseService.GetAll();
         }
 
         [HttpPost]
@@ -44,8 +43,7 @@ namespace LMWebApi.Controllers
         [HttpDelete]
         public async Task Delete(string _nutritionId)
         {
-            var user = await _userDatabaseService.FindByUsernameAsync(HttpContext.User.Identity.Name);
-            await _nutritionDatabaseService.Delete(user, _nutritionId);
+            await _nutritionDatabaseService.Delete(_nutritionId);
         }
     }
 }

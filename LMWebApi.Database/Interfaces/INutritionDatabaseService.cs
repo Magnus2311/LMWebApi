@@ -7,9 +7,9 @@ namespace LMWebApi.Database.Interfaces
 {
     public interface INutritionDatabaseService
     {
-        Task<IEnumerable<DailyNutrition>> GetAll(User user);
-        Task<IEnumerable<DailyNutrition>> Get(User user, DateTime fromDate, DateTime toDate);
+        Task<IEnumerable<DailyNutrition>> GetAll();
+        Task<IEnumerable<DailyNutrition>> Get(DateTime fromDate, DateTime toDate);
         Task<DailyNutrition> Add(DailyNutrition dailyNutrition);
-        Task Delete(User user, string nutritionId);
+        Task Delete(string nutritionId);
     }
 }

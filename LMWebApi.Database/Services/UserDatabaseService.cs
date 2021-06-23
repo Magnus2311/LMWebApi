@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LMWebApi.Common.Models.Database;
+using LMWebApi.Common.Models.Global;
 using LMWebApi.Database.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -51,17 +52,17 @@ namespace LMWebApi.Database.Services
             return await context.Users.ToListAsync();
         }
 
-        public async Task<bool> Login(User user)
+        public async Task<bool> Login()
         {
-            var dbUser = await FindByUsernameAsync(user.Username);
-            return _hasher.VerifyPassword(dbUser.Password, user.Password) && dbUser.IsConfirmed;
+            var dbUser = await FindByUsernameAsync(GlobalHelpers.CurrentUser.Username);
+            return _hasher.VerifyPassword(dbUser.Password, GlobalHelpers.CurrentUser.Password) && dbUser.IsConfirmed;
         }
 
-        public async Task<bool> TryChangePasswordAsync(User user, string newPassword)
+        public async Task<bool> TryChangePasswordAsync(string newPassword)
         {
             var context = new LMDbContext();
             var dbUser = await context.Users
-                .FirstOrDefaultAsync(u => u.Username.ToUpper() == user.Username.ToUpper());
+                .FirstOrDefaultAsync(u => u.Username.ToUpper() == GlobalHelpers.CurrentUser.Username.ToUpper());
             dbUser.Password = _hasher.HashPassword(newPassword);
             await context.SaveChangesAsync();
             return true;

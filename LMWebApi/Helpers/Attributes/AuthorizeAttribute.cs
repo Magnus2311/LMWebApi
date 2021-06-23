@@ -3,9 +3,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Text;
-using LMWebApi.Common.Helpers;
 using LMWebApi.Common.Iterfaces;
+using LMWebApi.Common.Models.Global;
 using LMWebApi.Common.Services;
 using LMWebApi.Database.Interfaces;
 using LMWebApi.Database.Services;
@@ -30,7 +29,7 @@ namespace LMWebApi.Helpers.Attributes
             _tokenizer = new Tokenizer();
         }
 
-        public void OnAuthorization(AuthorizationFilterContext context)
+        public async void OnAuthorization(AuthorizationFilterContext context)
         {
             var handler = new JwtSecurityTokenHandler();
             _context = context;
@@ -42,11 +41,12 @@ namespace LMWebApi.Helpers.Attributes
                 && ValidateToken(token))
             {
                 var username = (handler.ReadToken(token) as JwtSecurityToken).Claims.FirstOrDefault(claim => claim.Type.Contains("name")).Value;
-                var user = _dbService.FindByUsernameAsync(username).GetAwaiter().GetResult();
+                var user = await _dbService.FindByUsernameAsync(username);
                 if (user != null && user.RefreshTokens.Any(rt => rt == token))
                 {
                     accessSecToken = _tokenizer.GenerateUserJwtToken(user);
                     SetAccessToken(accessSecToken, context);
+                    GlobalHelpers.CurrentUser = user;
                     return;
                 }
             }

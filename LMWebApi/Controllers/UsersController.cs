@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using LMWebApi.Common.Iterfaces;
 using LMWebApi.Common.Models.Database;
+using LMWebApi.Common.Models.Global;
 using LMWebApi.Database.Interfaces;
 using LMWebApi.Emails.Interfaces;
 using LMWebApi.Helpers.Attributes;
@@ -47,7 +48,8 @@ namespace FutbotReact.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(User user)
         {
-            var isSuccessful = await _dbService.Login(user);
+            GlobalHelpers.CurrentUser = user;
+            var isSuccessful = await _dbService.Login();
             if (isSuccessful)
             {
                 var token = _tokenizer.GenerateUserJwtToken(user);
@@ -125,10 +127,9 @@ namespace FutbotReact.Controllers
         [Authorize]
         public async Task<IActionResult> ChangePassword(ChangePassParams passes)
         {
-            var user = await _dbService.FindByUsernameAsync(HttpContext.User.Identity.Name);
-            user.Password = passes.OldPassword;
-            if (await _dbService.Login(user))
-                if (await _dbService.TryChangePasswordAsync(user, passes.NewPassword))
+            GlobalHelpers.CurrentUser.Password = passes.OldPassword;
+            if (await _dbService.Login())
+                if (await _dbService.TryChangePasswordAsync(passes.NewPassword))
                     return Ok();
 
             return BadRequest();
@@ -140,8 +141,8 @@ namespace FutbotReact.Controllers
             if (!_tokenizer.ValidateToken(passes.Token)) return BadRequest();
 
             var username = _tokenizer.DecodeToken(passes.Token).ToDictionary(x => x.Key, x => x.Value)[ClaimTypes.Email];
-            var user = await _dbService.FindByUsernameAsync(username);
-            if (await _dbService.TryChangePasswordAsync(user, passes.NewPassword))
+            GlobalHelpers.CurrentUser = await _dbService.FindByUsernameAsync(username);
+            if (await _dbService.TryChangePasswordAsync(passes.NewPassword))
                 return Ok();
 
             return BadRequest();
