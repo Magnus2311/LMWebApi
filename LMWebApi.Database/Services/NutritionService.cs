@@ -43,5 +43,12 @@ namespace LMWebApi.Database.Services
                 await context.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<DailyNutrition>> GetForDay(DateTime date)
+        => await new LMDbContext()
+                .DailyNutritions
+                .Where(dn => dn.UserId == GlobalHelpers.CurrentUser.Id
+                            && dn.Date == date.Date)
+                .ToListAsync();
     }
 }

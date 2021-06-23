@@ -9,6 +9,7 @@ namespace LMWebApi.Database.Interfaces
     {
         Task<IEnumerable<DailyNutrition>> GetAll();
         Task<IEnumerable<DailyNutrition>> Get(DateTime fromDate, DateTime toDate);
+        Task<IEnumerable<DailyNutrition>> GetForDay(DateTime date);
         Task<DailyNutrition> Add(DailyNutrition dailyNutrition);
         Task Delete(string nutritionId);
     }

@@ -11,23 +11,24 @@ namespace LMWebApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class NutritionController : ControllerBase
+    public class NutritionsController : ControllerBase
     {
         private readonly INutritionDatabaseService _nutritionDatabaseService;
-        private readonly IUserDatabaseService _userDatabaseService;
 
-        public NutritionController(INutritionDatabaseService nutritionDatabaseService,
-            IUserDatabaseService userDatabaseService)
-        {
-            _nutritionDatabaseService = nutritionDatabaseService;
-            _userDatabaseService = userDatabaseService;
-        }
+        public NutritionsController(INutritionDatabaseService nutritionDatabaseService)
+            => _nutritionDatabaseService = nutritionDatabaseService;
 
         [HttpGet]
         public async Task<IEnumerable<DailyNutrition>> GetAll()
-        {
-            return await _nutritionDatabaseService.GetAll();
-        }
+            => await _nutritionDatabaseService.GetAll();
+
+        [HttpGet("get-for-period")]
+        public async Task<IEnumerable<DailyNutrition>> Get(DateTime fromDate, DateTime toDate)
+            => await _nutritionDatabaseService.Get(fromDate, toDate);
+
+        [HttpGet("get-for-day")]
+        public async Task<IEnumerable<DailyNutrition>> GetForDay(DateTime date)
+            => await _nutritionDatabaseService.GetForDay(date);
 
         [HttpPost]
         public async Task<DailyNutrition> Post(DailyNutrition dailyNutrition)
@@ -42,8 +43,6 @@ namespace LMWebApi.Controllers
 
         [HttpDelete]
         public async Task Delete(string _nutritionId)
-        {
-            await _nutritionDatabaseService.Delete(_nutritionId);
-        }
+            => await _nutritionDatabaseService.Delete(_nutritionId);
     }
 }

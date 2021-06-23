@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Threading.Tasks;
 using LMWebApi.Common.Iterfaces;
 using LMWebApi.Common.Models.Global;
 using LMWebApi.Common.Services;
@@ -33,12 +34,11 @@ namespace LMWebApi.Helpers.Attributes
         {
             var handler = new JwtSecurityTokenHandler();
             _context = context;
-            ;
             if (context.HttpContext.Request.Cookies.TryGetValue("access_token", out string accessToken)
-                && ValidateToken(accessToken)) return;
+                && await ValidateToken(accessToken)) return;
 
             if (context.HttpContext.Request.Cookies.TryGetValue("refresh_token", out string token)
-                && ValidateToken(token))
+                && await ValidateToken(token))
             {
                 var username = (handler.ReadToken(token) as JwtSecurityToken).Claims.FirstOrDefault(claim => claim.Type.Contains("name")).Value;
                 var user = await _dbService.FindByUsernameAsync(username);
@@ -46,7 +46,6 @@ namespace LMWebApi.Helpers.Attributes
                 {
                     accessSecToken = _tokenizer.GenerateUserJwtToken(user);
                     SetAccessToken(accessSecToken, context);
-                    GlobalHelpers.CurrentUser = user;
                     return;
                 }
             }
@@ -54,7 +53,7 @@ namespace LMWebApi.Helpers.Attributes
             context.Result = new UnauthorizedResult();
         }
 
-        private bool ValidateToken(string authToken)
+        private async Task<bool> ValidateToken(string authToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var validationParameters = _tokenizer.GetValidationParameters();
@@ -64,6 +63,8 @@ namespace LMWebApi.Helpers.Attributes
                 SecurityToken validatedToken;
                 IPrincipal principal = tokenHandler.ValidateToken(authToken, validationParameters, out validatedToken);
                 _context.HttpContext.User = (ClaimsPrincipal)principal;
+                var user = await _dbService.FindByUsernameAsync(_context.HttpContext.User.Identity.Name);
+                GlobalHelpers.CurrentUser = user;
                 return true;
             }
             catch
