@@ -13,6 +13,7 @@ namespace LMWebApi.Database.Services
     {
         public async Task<DailyNutrition> Add(DailyNutrition dailyNutrition)
         {
+            dailyNutrition.User = GlobalHelpers.CurrentUser;
             var dbContext = new LMDbContext();
             await dbContext.DailyNutritions.AddAsync(dailyNutrition);
             await dbContext.SaveChangesAsync();
@@ -45,7 +46,7 @@ namespace LMWebApi.Database.Services
         }
 
         public async Task<IEnumerable<DailyNutrition>> GetForDay(DateTime date)
-        => await new LMDbContext()
+            => await new LMDbContext()
                 .DailyNutritions
                 .Where(dn => dn.UserId == GlobalHelpers.CurrentUser.Id
                             && dn.Date == date.Date)
