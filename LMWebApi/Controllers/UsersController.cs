@@ -163,7 +163,7 @@ namespace FutbotReact.Controllers
             {
                 Expires = DateTime.Now.AddHours(1),
             };
-            Response.Cookies.Append("refresh_token", accessToken, cookieOptions);
+            Response.Cookies.Append("access_token", accessToken, cookieOptions);
         }
 
         public class ChangePassParams
