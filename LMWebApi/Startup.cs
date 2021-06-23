@@ -104,7 +104,6 @@ namespace LMWebApi
         {
             services.AddScoped<IProductsDatabaseService, ProductsDatabaseService>();
             services.AddScoped<ICategoriesDatabaseService, CategoriesDatabaseService>();
-            services.AddScoped<IMealsDatabaseService, MealsDatabaseService>();
             services.AddScoped<IShopDatabaseService, ShopDatabaseService>();
             services.AddScoped<IShopItemsDatabaseService, ShopItemsDatabaseService>();
             services.AddScoped<IBrandsDatabaseService, BrandsDatabaseService>();
@@ -113,6 +112,7 @@ namespace LMWebApi
             services.AddScoped<IShopItemFeedbacksDatabaseService, ShopItemFeedbacksDatabaseService>();
             services.AddScoped<IEmailsService, GmailSmtpEmailsService>();
             services.AddScoped<ITokenizer, Tokenizer>();
+            services.AddScoped<INutritionDatabaseService, NutritionDatabaseService>();
             services.AddScoped<IKnowledgeDatabaseService, KnowledgeDatabaseService>();
             services.AddScoped<IArticlesDatabaseService, ArticlesDatabaseService>();
         }

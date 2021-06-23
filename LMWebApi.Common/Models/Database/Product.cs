@@ -19,6 +19,6 @@ namespace LMWebApi.Common.Models.Database
         public string CategoryId { get; set; }
         public Category Category { get; set; }
 
-        public List<ProductMeal> ProductMeals { get; set; } = new List<ProductMeal>();
+        public List<DailyNutrition> DailyNutritions { get; set; } = new List<DailyNutrition>();
     }
 }
