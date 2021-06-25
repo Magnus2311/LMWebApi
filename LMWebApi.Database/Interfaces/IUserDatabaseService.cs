@@ -8,11 +8,11 @@ namespace LMWebApi.Database.Interfaces
     {
         Task Add(User user);
         Task<List<User>> GetAll();
-        Task<bool> Login(User user);
+        Task<bool> Login();
         Task<User> FindByUsernameAsync(string username);
         Task UpdateRefreshToken(User user);
         Task Delete(string username);
         Task ConfirmEmailAsync(string email);
-        Task<bool> TryChangePasswordAsync(User user, string newPassword);
+        Task<bool> TryChangePasswordAsync(string newPassword);
     }
 }

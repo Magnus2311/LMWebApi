@@ -3,9 +3,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Text;
-using LMWebApi.Common.Helpers;
+using System.Threading.Tasks;
 using LMWebApi.Common.Iterfaces;
+using LMWebApi.Common.Models.Global;
 using LMWebApi.Common.Services;
 using LMWebApi.Database.Interfaces;
 using LMWebApi.Database.Services;
@@ -30,19 +30,18 @@ namespace LMWebApi.Helpers.Attributes
             _tokenizer = new Tokenizer();
         }
 
-        public void OnAuthorization(AuthorizationFilterContext context)
+        public async void OnAuthorization(AuthorizationFilterContext context)
         {
             var handler = new JwtSecurityTokenHandler();
             _context = context;
-            ;
             if (context.HttpContext.Request.Cookies.TryGetValue("access_token", out string accessToken)
-                && ValidateToken(accessToken)) return;
+                && await ValidateToken(accessToken)) return;
 
             if (context.HttpContext.Request.Cookies.TryGetValue("refresh_token", out string token)
-                && ValidateToken(token))
+                && await ValidateToken(token))
             {
                 var username = (handler.ReadToken(token) as JwtSecurityToken).Claims.FirstOrDefault(claim => claim.Type.Contains("name")).Value;
-                var user = _dbService.FindByUsernameAsync(username).GetAwaiter().GetResult();
+                var user = await _dbService.FindByUsernameAsync(username);
                 if (user != null && user.RefreshTokens.Any(rt => rt == token))
                 {
                     accessSecToken = _tokenizer.GenerateUserJwtToken(user);
@@ -54,7 +53,7 @@ namespace LMWebApi.Helpers.Attributes
             context.Result = new UnauthorizedResult();
         }
 
-        private bool ValidateToken(string authToken)
+        private async Task<bool> ValidateToken(string authToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var validationParameters = _tokenizer.GetValidationParameters();
@@ -64,6 +63,8 @@ namespace LMWebApi.Helpers.Attributes
                 SecurityToken validatedToken;
                 IPrincipal principal = tokenHandler.ValidateToken(authToken, validationParameters, out validatedToken);
                 _context.HttpContext.User = (ClaimsPrincipal)principal;
+                var user = await _dbService.FindByUsernameAsync(_context.HttpContext.User.Identity.Name);
+                GlobalHelpers.CurrentUser = user;
                 return true;
             }
             catch

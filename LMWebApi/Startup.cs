@@ -1,5 +1,6 @@
 using System;
 using LMWebApi.Common.Iterfaces;
+using LMWebApi.Common.Models.Global;
 using LMWebApi.Common.Services;
 using LMWebApi.Database;
 using LMWebApi.Database.Interfaces;
@@ -115,6 +116,7 @@ namespace LMWebApi
             services.AddScoped<INutritionDatabaseService, NutritionDatabaseService>();
             services.AddScoped<IKnowledgeDatabaseService, KnowledgeDatabaseService>();
             services.AddScoped<IArticlesDatabaseService, ArticlesDatabaseService>();
+            services.AddScoped<GlobalHelpers>();
         }
     }
 }
