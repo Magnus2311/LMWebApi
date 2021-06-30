@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using LMWebApi.Common.Models.Database;
+using LMWebApi.Common.Models.DTOs;
 using LMWebApi.Database.Interfaces;
 using LMWebApi.Helpers.Attributes;
 using Microsoft.AspNetCore.Mvc;
@@ -14,9 +16,14 @@ namespace LMWebApi.Controllers
     public class NutritionsController : ControllerBase
     {
         private readonly INutritionDatabaseService _nutritionDatabaseService;
+        private readonly IMapper _mapper;
 
-        public NutritionsController(INutritionDatabaseService nutritionDatabaseService)
-            => _nutritionDatabaseService = nutritionDatabaseService;
+        public NutritionsController(INutritionDatabaseService nutritionDatabaseService,
+            IMapper mapper)
+        {
+            _nutritionDatabaseService = nutritionDatabaseService;
+            _mapper = mapper;
+        }
 
         [HttpGet]
         public async Task<IEnumerable<DailyNutrition>> GetAll()
@@ -31,8 +38,9 @@ namespace LMWebApi.Controllers
             => await _nutritionDatabaseService.GetForDay(date);
 
         [HttpPost]
-        public async Task<DailyNutrition> Post(DailyNutrition dailyNutrition)
+        public async Task<DailyNutrition> Post(DailyNutritionDTO dailyNutritionDTO)
         {
+            var dailyNutrition = _mapper.Map<DailyNutrition>(dailyNutritionDTO);
             if (ModelState.IsValid)
             {
                 await _nutritionDatabaseService.Add(dailyNutrition);

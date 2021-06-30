@@ -13,7 +13,8 @@ namespace LMWebApi.Database.Services
     {
         public async Task<DailyNutrition> Add(DailyNutrition dailyNutrition)
         {
-            dailyNutrition.User = GlobalHelpers.CurrentUser;
+            dailyNutrition.Id = null;
+            dailyNutrition.UserId = GlobalHelpers.CurrentUser.Id;
             var dbContext = new LMDbContext();
             await dbContext.DailyNutritions.AddAsync(dailyNutrition);
             await dbContext.SaveChangesAsync();

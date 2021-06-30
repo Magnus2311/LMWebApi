@@ -1,5 +1,7 @@
 using System;
+using AutoMapper;
 using LMWebApi.Common.Iterfaces;
+using LMWebApi.Common.Mappers.Profiles;
 using LMWebApi.Common.Models.Global;
 using LMWebApi.Common.Services;
 using LMWebApi.Database;
@@ -55,6 +57,7 @@ namespace LMWebApi
             });
 
             RegisterServices(services);
+            SetupMappers(services);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -96,9 +99,13 @@ namespace LMWebApi
                 options => options.WithOrigins("https://localhost:44312/", "https://localhost:5001/").AllowAnyMethod()
             );
 
+            MigrateDatabase();
+        }
+
+        private void MigrateDatabase()
+        {
             var dbContext = new LMDbContext();
             dbContext.Database.Migrate();
-
         }
 
         private void RegisterServices(IServiceCollection services)
@@ -117,6 +124,15 @@ namespace LMWebApi
             services.AddScoped<IKnowledgeDatabaseService, KnowledgeDatabaseService>();
             services.AddScoped<IArticlesDatabaseService, ArticlesDatabaseService>();
             services.AddScoped<GlobalHelpers>();
+        }  
+
+        private void SetupMappers(IServiceCollection services)
+        {
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+            services.AddSingleton(mapperConfig.CreateMapper());
         }
     }
 }

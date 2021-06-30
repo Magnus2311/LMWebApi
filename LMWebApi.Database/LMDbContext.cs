@@ -107,7 +107,7 @@ namespace LMWebApi.Database
         {
             base.OnConfiguring(builder);
 
-            builder.UseSqlServer("Server=.;Database=LifeMode;Integrated Security=True;");
+            builder.UseSqlServer("Server=.\\sqlexpress;Database=LifeMode;Integrated Security=True;");
         }
     }
 }

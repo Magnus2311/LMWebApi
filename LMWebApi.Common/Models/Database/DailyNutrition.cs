@@ -7,7 +7,7 @@ namespace LMWebApi.Common.Models.Database
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
         public decimal Weight { get; set; }
 
         public string ProductId { get; set; }
